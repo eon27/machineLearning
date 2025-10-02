@@ -2,6 +2,8 @@ import random
 import math
 import turtle
 
+#Optimal linear regression model for this seed: y = 0.28x + 45.83
+
 random.seed(1244)
 
 X = 0
@@ -32,6 +34,11 @@ while True:
         lossBiasDown += abs(dataset[j][Y] - ((bias-1) + weight * dataset[j][X]))
         lossWeightUp += abs(dataset[j][Y] - (bias + (weight+1) * dataset[j][X]))
         lossWeightDown += abs(dataset[j][Y] - (bias + (weight-1) * dataset[j][X]))
+        """loss += pow(abs(dataset[j][Y] - (bias + weight * dataset[j][X])), 2)
+        lossBiasUp += pow(abs(dataset[j][Y] - ((bias+1) + weight * dataset[j][X])), 2)
+        lossBiasDown += pow(abs(dataset[j][Y] - ((bias-1) + weight * dataset[j][X])), 2)
+        lossWeightUp += pow(abs(dataset[j][Y] - (bias + (weight+1) * dataset[j][X])), 2)
+        lossWeightDown += pow(abs(dataset[j][Y] - (bias + (weight-1) * dataset[j][X])), 2)"""
     loss = loss / datasize
     lossBiasUp /= datasize
     lossBiasDown /= datasize
@@ -43,6 +50,8 @@ while True:
     #print(lossBiasDown)
     #print(lossWeightUp)
     #print(lossWeightDown)
+    
+    print(f"{loss}      {lossWeightUp}      {lossWeightDown}")
 
     biasChange = 0
     weightChange = 0
@@ -52,9 +61,9 @@ while True:
         biasChange = -1
 
     if (lossWeightUp < lossWeightDown):
-        weightChange = 1
+        weightChange = 0.1
     else:
-        weightChange = -1
+        weightChange = -0.1
 
     if (loss < lossWeightUp and loss < lossWeightDown):
         weightChange = 0
@@ -62,10 +71,11 @@ while True:
         biasChange = 0
 
     if (weightChange + biasChange == 0):
-        break;
+        break
 
     bias += biasChange
     weight += weightChange
+    print(f"change {weightChange}")
 
 print(bias)
 print(weight)
@@ -85,5 +95,9 @@ t.up()
 t.goto(-200,-200)
 t.down()
 t.goto(300,-200)
+t.up()
+t.goto(-200, bias*5 - 200)
+t.down()
+t.goto(300, (bias + weight*100) * 5 - 200)
 
 turtle.mainloop()
