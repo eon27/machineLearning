@@ -9,6 +9,8 @@ random.seed(1244)
 X = 0
 Y = 1
 
+changeRate = 0.1
+
 datasize = 25
 
 dataset = []
@@ -30,10 +32,10 @@ while True:
     lossWeightDown = 0
     for j in range(datasize):
         loss += abs(dataset[j][Y] - (bias + weight * dataset[j][X]))
-        lossBiasUp += abs(dataset[j][Y] - ((bias+1) + weight * dataset[j][X]))
-        lossBiasDown += abs(dataset[j][Y] - ((bias-1) + weight * dataset[j][X]))
-        lossWeightUp += abs(dataset[j][Y] - (bias + (weight+1) * dataset[j][X]))
-        lossWeightDown += abs(dataset[j][Y] - (bias + (weight-1) * dataset[j][X]))
+        lossBiasUp += abs(dataset[j][Y] - ((bias+changeRate) + weight * dataset[j][X]))
+        lossBiasDown += abs(dataset[j][Y] - ((bias-changeRate) + weight * dataset[j][X]))
+        lossWeightUp += abs(dataset[j][Y] - (bias + (weight+changeRate) * dataset[j][X]))
+        lossWeightDown += abs(dataset[j][Y] - (bias + (weight-changeRate) * dataset[j][X]))
         """loss += pow(abs(dataset[j][Y] - (bias + weight * dataset[j][X])), 2)
         lossBiasUp += pow(abs(dataset[j][Y] - ((bias+1) + weight * dataset[j][X])), 2)
         lossBiasDown += pow(abs(dataset[j][Y] - ((bias-1) + weight * dataset[j][X])), 2)
@@ -56,14 +58,14 @@ while True:
     biasChange = 0
     weightChange = 0
     if (lossBiasUp < lossBiasDown):
-        biasChange = 1
+        biasChange = changeRate
     else:
-        biasChange = -1
+        biasChange = -changeRate
 
     if (lossWeightUp < lossWeightDown):
-        weightChange = 0.1
+        weightChange = changeRate
     else:
-        weightChange = -0.1
+        weightChange = -changeRate
 
     if (loss < lossWeightUp and loss < lossWeightDown):
         weightChange = 0
